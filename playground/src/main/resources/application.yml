@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ep-weathered-math-909876.us-east-2.aws.neon.tech/sccs
+    username: ssoslickk
+    password: H94xCKgdQjuS
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

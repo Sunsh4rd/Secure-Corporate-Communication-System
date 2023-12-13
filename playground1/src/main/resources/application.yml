@@ -1,0 +1,24 @@
+spring:
+  liquibase:
+    enabled: true
+
+  datasource:
+    url: jdbc:postgresql://ep-weathered-math-909876.us-east-2.aws.neon.tech/sccs
+    username: ssoslickk
+    password: H94xCKgdQjuS
+#    url: jdbc:postgresql://localhost/postgres
+#    username: postgres
+#    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+jwt_secret: aisderhoo
