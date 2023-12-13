@@ -16,19 +16,28 @@ export const ModalTask = ({ users, chatMessages, setChatMessages, isAdmin, task,
 
     const [selectedUserOption, setSelectedUserOption] = useState('');
     const [assignees, setAssignees] = useState(task.assignees);
+    const [chat, setChat] = useState(chatMessages);
 
     const [stompClient, setStompClient] = useState(null);
 
     useEffect(() => {
         console.log(task);
         if (open) {
-            const stomp = connectToWebSocket(task.id, chatMessages, setChatMessages);
+            const stomp = connectToWebSocket(task.id, chatMessages, (chatMessages) => setChat(chatMessages));
             setStompClient(stomp);
+        }
+        else if (stompClient) {
+            stompClient.disconnect(() => console.log("disconnected"));
+            setStompClient(null);
         }
         // sock = new SockJS("http://localhost:8080/ws");
         // stompClient = over(sock);
         // stompClient.connect({}, onConnected, (e) => console.log("err" + e));
     }, [open]);
+
+    useEffect(() => {
+        console.log(chat);
+    }, [chat]);
 
     // const connect = (event) => {
     //     const sock = new SockJS("http://localhost:8080/ws");
@@ -128,10 +137,12 @@ export const ModalTask = ({ users, chatMessages, setChatMessages, isAdmin, task,
                         </Button>
                     </div>
                     : null}
-                <ul id={'messages' + task?.id}>
-                    {chatMessages?.map((msg) => <li key={msg?.id}>{msg?.content}</li>)}
+                <div className="chat-container">
+                <ul className="chat_messages" id={'messages' + task?.id}>
+                    {chat?.map((msg) => <li className="chat_message" key={msg?.id}>{msg?.message || msg?.content}</li>)}
                 </ul>
-                <input id={"msg" + task?.id} placeholder="enter message" />
+                <input className="chat_input"id={"msg" + task?.id} placeholder="enter message" />
+                </div>
                 <Row className={'p-2 gap-3 justify-content-center'}>
                     <Col className={'p-0'} xs={5}>
                         {/* <Button

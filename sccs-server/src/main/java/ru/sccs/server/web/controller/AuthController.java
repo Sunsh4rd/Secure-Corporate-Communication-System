@@ -19,7 +19,7 @@ import ru.sccs.server.domain.user.Role;
 import ru.sccs.server.repository.UserRepository;
 import ru.sccs.server.web.dto.user.UserCreationDTO;
 import ru.sccs.server.web.mapper.UserMapper;
-import ru.sccs.server.web.security.JWTUtil;
+import ru.sccs.server.web.security.JwtUtil;
 
 import java.util.Map;
 
@@ -31,7 +31,7 @@ import java.util.Map;
 public class AuthController {
 
     private final UserMapper userMapper;
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;

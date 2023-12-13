@@ -13,7 +13,7 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Component
-public class JWTUtil {
+public class JwtUtil {
 
     @Value("${jwt_secret}")
     private String secret;
@@ -21,7 +21,7 @@ public class JWTUtil {
     private final String issuer = "SCCS";
 
     public String generateRefreshToken(String username) {
-        Date expiration = Date.from(ZonedDateTime.now().plusHours(8).toInstant());
+        Date expiration = Date.from(ZonedDateTime.now().plusMinutes(2).toInstant());
         return JWT.create()
                 .withSubject(subject)
                 .withClaim("username", username)
@@ -32,7 +32,7 @@ public class JWTUtil {
     }
 
     public String generateAccessToken(Long id, String username, Role role) {
-        Date expiration = Date.from(ZonedDateTime.now().plusHours(1).toInstant());
+        Date expiration = Date.from(ZonedDateTime.now().plusMinutes(1).toInstant());
         return JWT.create()
                 .withSubject(subject)
                 .withClaim("id", id)

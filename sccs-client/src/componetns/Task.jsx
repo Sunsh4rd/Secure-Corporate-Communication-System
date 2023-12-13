@@ -10,10 +10,11 @@ import { ModalTask } from './ModalTask/ModalTask.jsx';
 import {useTaskStore} from "../stores/useTaskStore.js"
 
 const TaskContainer = styled.div`
-  border: 1px solid #ccc;
+  border: 1px solid;
   border-radius: 30px;
   padding: 10px;
   margin-bottom: 10px;
+  background-color: transparent;
 `;
 
 const BlurContainer = styled.div`
@@ -45,7 +46,7 @@ const Task = ({ task, users }) => {
     }
 
     return (
-        <TaskContainer onClick={handleShow} className={'d-flex align-items-center justify-content-center'}>
+        <TaskContainer onClick={handleShow} className={'d-flex align-items-center justify-content-center task-container'}>
             <ModalTask open={open} setOpen={setOpen} chatMessages={chatMessages} setChatMessages={setChatMessages} users={users} handleClose={handleClose} task={task} isAdmin={isAdmin}/>
             {loader ? <div className={'position-absolute'}>
                 <Loader />
@@ -54,7 +55,7 @@ const Task = ({ task, users }) => {
                     {chatMessages?.map((msg) => <li key={msg?.id}>{msg?.content}</li>)}
                 </ul> */}
             <div className={loader ? 'opacity-50 w-100' : 'w-100'}>
-                <h3>{task?.title}</h3>
+                <h3 className="task-title">{task?.title}</h3>
                 {/* <p>{task?.description}</p> */}
                 <p>Status: {task?.status}</p>
                 {/* <ul id={'assignees' + task?.id}>

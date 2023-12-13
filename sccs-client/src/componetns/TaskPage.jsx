@@ -85,7 +85,7 @@ const TaskPage = () => {
     <TaskPageContainer>
       <ModalAddTask open={open} setOpen={setOpen} />
       <Row>
-        <Col className={"d-flex justify-content-end"} xs={8}>
+        <Col className={"d-flex justify-content-end app-title"} xs={8}>
           <h1>Task Management App</h1>
         </Col>
         {isAdmin ? (
@@ -98,18 +98,18 @@ const TaskPage = () => {
           <></>
         )}
       </Row>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} className="cols-container">
         {cols.map((item) => {
           return (
-            <StatusColumn className={"rounded"} item xs={4}>
-              <Paper elevation={3}>
-                <h2 className={"border-bottom border-4 py-3"}>{item}</h2>
+            <div className="tasks-column">
+              <h2 className="column-title">
+              <h2 className={"py-3 background-transparent"}>{item.replace('_', ' ')}</h2>
                 <TaskList
                   tasks={tasks?.filter((task) => task.status === item)}
                   users={users}
                 />
-              </Paper>
-            </StatusColumn>
+              </h2>
+            </div>
           );
         })}
       </Grid>

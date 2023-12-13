@@ -43,7 +43,7 @@ public class ChatController {
     @MessageMapping("/taskChat.{taskId}.send")
     @SendTo("/taskChat.{taskId}")
     @Transactional
-    public String receive(@Payload String message, @DestinationVariable("taskId") String taskId) throws JsonProcessingException {
+    public ChatMessage receive(@Payload String message, @DestinationVariable("taskId") String taskId) throws JsonProcessingException {
 //        messagingTemplate.convertAndSend("taskChat/task/"+taskId, message);
         log.info("received " + message);
         Task task = taskRepository.findById(Long.valueOf(taskId))
@@ -60,7 +60,9 @@ public class ChatController {
         log.info(task.getChatMessages());
         log.info(msg);
         taskRepository.save(task);
-        return clientMessage.getMessage();
+//        return clientMessage.getMessage();
+//        return message;
+        return msg;
     }
 
 }

@@ -13,15 +13,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.sccs.server.service.impl.SystemUserDetailsServiceImpl;
-import ru.sccs.server.web.security.JWTUtil;
+import ru.sccs.server.web.security.JwtUtil;
 
 import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class JWTFilter extends OncePerRequestFilter {
+public class JwtFilter extends OncePerRequestFilter {
 
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     private final SystemUserDetailsServiceImpl systemUserDetailsService;
 
     @Override
