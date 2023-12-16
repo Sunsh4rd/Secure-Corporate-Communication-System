@@ -42,7 +42,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody UserCreationDTO userCreationDTO) {
+    public ResponseEntity<?> login(@RequestBody UserCreationDTO userCreationDTO) {
         log.info(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         Authentication authenticate = authenticationManager
                 .authenticate(
@@ -54,7 +54,13 @@ public class AuthController {
         Long id = userRepository.findByUsername(userCreationDTO.getUsername()).orElseThrow(() -> new IllegalArgumentException("no username")).getId();
         String refreshToken = jwtUtil.generateRefreshToken(id, userCreationDTO.getUsername(), Role.valueOf(authenticate.getAuthorities().stream().toList().get(0).toString()));
         String accessToken = jwtUtil.generateAccessToken(id, userCreationDTO.getUsername(), Role.valueOf(authenticate.getAuthorities().stream().toList().get(0).toString()));
-        ResponseCookie cookie = ResponseCookie.from("refresh_token", refreshToken)
+        ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", refreshToken)
+                .httpOnly(true)
+                .sameSite("Strict")
+                .path("/")
+                .maxAge(86400)
+                .build();
+        ResponseCookie accessCookie = ResponseCookie.from("access_token", accessToken)
                 .httpOnly(true)
                 .sameSite("Strict")
                 .path("/")
@@ -62,13 +68,14 @@ public class AuthController {
                 .build();
         log.info(accessToken);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.SET_COOKIE, cookie.toString());
-        headers.add(HttpHeaders.LOCATION, "http://localhost:8080/auth/refresh");
-        return new ResponseEntity<>(Map.of("access_token", accessToken), headers, HttpStatus.FOUND);
-//        return ResponseEntity.ok()
-//                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-//                .headers()
-//                .body(Map.of("access_token", accessToken));
+        headers.add(HttpHeaders.SET_COOKIE, refreshCookie.toString());
+        headers.add(HttpHeaders.SET_COOKIE, accessCookie.toString());
+//        headers.add(HttpHeaders.LOCATION, "http://localhost:8080/auth/refresh");
+//        return new ResponseEntity<>(Map.of("access_token", accessToken), headers, HttpStatus.FOUND);
+        return ResponseEntity.ok()
+//                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                .headers(headers)
+                .build();
     }
 
     @PostMapping("/register")

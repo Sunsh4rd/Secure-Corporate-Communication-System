@@ -24,7 +24,7 @@ public class JwtUtil {
     private final String issuer = "SCCS";
 
     public String generateRefreshToken(Long id, String username, Role role) {
-        Date expiration = Date.from(ZonedDateTime.now().plusHours(1).toInstant());
+        Date expiration = Date.from(ZonedDateTime.now().plusSeconds(15).toInstant());
         return JWT.create()
                 .withSubject(subject)
                 .withClaim("id", id)

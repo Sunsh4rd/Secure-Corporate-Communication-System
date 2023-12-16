@@ -60,6 +60,9 @@ public class SecurityConfig {
                                 .authenticationEntryPoint(
                                         (request, response, authenticationException) -> {
                                             response.addCookie(WebUtils.getCookie(request, "refresh_token"));
+//                                            response.addHeader("Origin", "http://localhost:3000");
+//                                            response.addHeader("Access-Control-Allow-Credentials", "true");
+//                                            response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
                                             response.sendRedirect("/auth/refresh");
                                         }
                                 )
@@ -77,11 +80,12 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+//        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.addAllowedHeader("Access-Control-Allow-Origin");
+        configuration.addExposedHeader("*");
         configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-//        configuration.addAllowedOrigin("*");
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

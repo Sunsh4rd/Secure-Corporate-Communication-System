@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.WebUtils;
 import ru.sccs.server.service.impl.SystemUserDetailsServiceImpl;
 import ru.sccs.server.web.security.JwtUtil;
 
@@ -37,12 +39,12 @@ public class JwtFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        String authorization = ((HttpServletRequest) request).getHeader("Authorization");
-//        Cookie tokenCookie = WebUtils.getCookie(request, "refresh_token");
+//        String authorization = ((HttpServletRequest) request).getHeader("Authorization");
+        Cookie tokenCookie = WebUtils.getCookie((HttpServletRequest) request, "access_token");
 
-        if (/*tokenCookie != null*/ authorization!= null && !authorization.isBlank() && authorization.startsWith("Bearer ")) {
-//            String jwt = tokenCookie.getValue();
-            String jwt = authorization.substring(7);
+        if (tokenCookie != null /* authorization!= null && !authorization.isBlank() && authorization.startsWith("Bearer ")*/) {
+            String jwt = tokenCookie.getValue();
+//            String jwt = authorization.substring(7);
             if (jwt.isBlank()) {
                 ( (HttpServletResponse)response).sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT");
             } else {
