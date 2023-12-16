@@ -7,8 +7,25 @@ export const getTasks = async () => {
         headers: {
             'Content-Type': 'application/json',
             "Authorization": `Bearer ${sessionStorage.getItem("access_token")}`
-        }
+        },
+        method: "GET",
+      credentials: "include",
     })
+        // .then(response => {
+        //     console.log(response.status);
+        
+        //     if (response.status === 302) {
+        //         console.log(response)
+        //     }
+        // })
+    //             return fetch("http://localhost:8080/auth/refresh", {
+    //                 method: "POST",
+    //                 credentials: 'include',
+    //             });
+    // } else {
+    //     return response;
+    // }}
+        // )
         .then(response => response.json())
         .then(data => {
             console.log(data);

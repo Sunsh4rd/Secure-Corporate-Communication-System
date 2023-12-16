@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.util.WebUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,6 +55,21 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception ->
+                        exception
+                                .authenticationEntryPoint(
+                                        (request, response, authenticationException) -> {
+                                            response.addCookie(WebUtils.getCookie(request, "refresh_token"));
+                                            response.sendRedirect("/auth/refresh");
+                                        }
+                                )
+//                                .accessDeniedHandler(
+//                                        (request, response, accessDeniedException) -> {
+//                                            response.addCookie(WebUtils.getCookie(request, "refresh_token"));
+//                                            response.sendRedirect("/auth/refresh");
+//                                        }
+//                                )
+                )
                 .build();
 
     }

@@ -5,7 +5,8 @@ Configuration:
       name: Console
       target: SYSTEM_OUT
       PatternLayout:
-        pattern: "%d{HH:mm:ss.SSS} %highlight{[%t] %-5level} %logger{36} - %msg%n{FATAL=red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue, TRACE=white}"
+        pattern: "%d{HH:mm:ss.SSS} %highlight{[%t] %-5level} %logger{36} - %M %msg%n{FATAL=red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue, TRACE=white}"
+        disableAnsi: false
   Loggers:
     Root:
       level: info

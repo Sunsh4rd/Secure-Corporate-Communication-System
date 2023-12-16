@@ -1,8 +1,12 @@
 package ru.sccs.server.web.controller;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,17 +14,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.WebUtils;
 import ru.sccs.server.domain.user.Role;
 import ru.sccs.server.repository.UserRepository;
 import ru.sccs.server.web.dto.user.UserCreationDTO;
 import ru.sccs.server.web.mapper.UserMapper;
 import ru.sccs.server.web.security.JwtUtil;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -47,7 +52,7 @@ public class AuthController {
                 );
         log.info(authenticate);
         Long id = userRepository.findByUsername(userCreationDTO.getUsername()).orElseThrow(() -> new IllegalArgumentException("no username")).getId();
-        String refreshToken = jwtUtil.generateRefreshToken(userCreationDTO.getUsername());
+        String refreshToken = jwtUtil.generateRefreshToken(id, userCreationDTO.getUsername(), Role.valueOf(authenticate.getAuthorities().stream().toList().get(0).toString()));
         String accessToken = jwtUtil.generateAccessToken(id, userCreationDTO.getUsername(), Role.valueOf(authenticate.getAuthorities().stream().toList().get(0).toString()));
         ResponseCookie cookie = ResponseCookie.from("refresh_token", refreshToken)
                 .httpOnly(true)
@@ -56,9 +61,14 @@ public class AuthController {
                 .maxAge(86400)
                 .build();
         log.info(accessToken);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(Map.of("access_token", accessToken));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.SET_COOKIE, cookie.toString());
+        headers.add(HttpHeaders.LOCATION, "http://localhost:8080/auth/refresh");
+        return new ResponseEntity<>(Map.of("access_token", accessToken), headers, HttpStatus.FOUND);
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+//                .headers()
+//                .body(Map.of("access_token", accessToken));
     }
 
     @PostMapping("/register")
@@ -67,5 +77,44 @@ public class AuthController {
         userCreationDTO.setPassword(passwordEncoder.encode(userCreationDTO.getPassword()));
         return userRepository.save(userMapper.toEntity(userCreationDTO)).getId();
     }
+
+    @GetMapping("/refresh")
+    public ResponseEntity<?> refreshTokens(HttpServletRequest request) {
+        log.warn(request);
+        log.warn(request.getCookies());
+        Cookie tokenCookie = WebUtils.getCookie(request, "refresh_token");
+        assert tokenCookie != null;
+        String refresh = tokenCookie.getValue();
+        log.info("/refresh ENDPOINT CALL {}", refresh);
+        try {
+            List<String> claims = jwtUtil.validateTokenAndRetrieveAllClaims(refresh);
+
+            String newRefresh = jwtUtil.generateRefreshToken(Long.valueOf(claims.get(0)), claims.get(1), Role.valueOf(claims.get(2)));
+            String newAccess = jwtUtil.generateAccessToken(Long.valueOf(claims.get(0)), claims.get(1), Role.valueOf(claims.get(2)));
+
+            ResponseCookie cookie = ResponseCookie.from("refresh_token", newRefresh)
+                    .httpOnly(true)
+                    .sameSite("Strict")
+                    .path("/")
+                    .maxAge(86400)
+                    .build();
+            log.info("new access {}", newAccess);
+            log.info("new refresh {}", newRefresh);
+
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                    .body(Map.of("access_token", newAccess));
+        } catch (TokenExpiredException e) {
+            log.error("redirecting to login");
+            return ResponseEntity.status(HttpStatus.FOUND).
+                    headers(new HttpHeaders(
+                            CollectionUtils.toMultiValueMap(
+                                    Map.of(HttpHeaders.LOCATION, List.of("http://localhost:8080/auth/login"))
+                            ))
+                    ).build();
+        }
+    }
+
 
 }
