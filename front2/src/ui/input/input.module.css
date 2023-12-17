@@ -1,0 +1,58 @@
+
+
+.input {
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  border: 0;
+  border-bottom: 2px solid black;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+  color: black;
+  border-radius: 5px;
+  padding: 12px 10px 12px 28px;
+  background: transparent;
+  background-repeat: no-repeat;
+  background-size: 20px 15px;
+  background-position-x: left;
+  background-position-y: center;
+}
+
+.input:focus  {
+  outline: none;
+  border-bottom: 2px solid rgb(96, 96, 241);
+}
+
+.input[type="password"] {
+  background-size: 20px 20px;
+}
+
+.input[type="name"] {
+  background-size: 26px 26px;
+}
+
+.error_meassage {
+  margin: 6px 0 0 6px;
+  color: #605F5F;
+  display: none;
+}
+
+
+input:invalid[focused="true"] ~ .error_meassage {
+  display: block;
+}
+
+.input_border {
+  border-bottom: 2px solid rgb(0, 0, 0) !important;
+}
+
+input:valid {
+  border-bottom: 2px solid #20C997;
+}
+
+input:invalid[focused="true"] {
+  border-bottom: 2px solid #E25563;
+}
+
