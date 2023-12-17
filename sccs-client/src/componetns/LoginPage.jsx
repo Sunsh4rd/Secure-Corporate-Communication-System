@@ -65,11 +65,7 @@ const LoginPage = () => {
       credentials: "include",
       body: JSON.stringify({ username: user, password: password }),
     })
-      // .then((res) => res.json())
-      .then((data) =>
-        // sessionStorage.setItem("access_token", data.access_token)
-        console.log(data)
-      );
+      .then((data) => console.log(data));
     signin(user, () => navigate(fromPage, { replace: true }));
   };
 
