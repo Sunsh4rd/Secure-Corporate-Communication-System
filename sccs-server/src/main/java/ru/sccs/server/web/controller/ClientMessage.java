@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ClientMessage {
 
-    private Long id;
+//    private Long id;
+    private String username;
     private String message;
 
 }

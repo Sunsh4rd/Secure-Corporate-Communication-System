@@ -3,7 +3,7 @@ package ru.sccs.server.web.dto.auth;
 import lombok.Data;
 
 @Data
-public class AuthenticationDTO {
+public class AuthenticationDto {
 
     private String username;
     private String password;

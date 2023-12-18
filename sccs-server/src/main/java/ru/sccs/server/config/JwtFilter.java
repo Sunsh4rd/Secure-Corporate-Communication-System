@@ -46,7 +46,7 @@ public class JwtFilter extends GenericFilterBean {
             String jwt = tokenCookie.getValue();
 //            String jwt = authorization.substring(7);
             if (jwt.isBlank()) {
-                ( (HttpServletResponse)response).sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT");
+                ( (HttpServletResponse)response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT");
             } else {
                 try {
                     String username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
@@ -62,6 +62,7 @@ public class JwtFilter extends GenericFilterBean {
                     }
                 } catch (JWTVerificationException e) {
                     log.error("EXPIRED JWT");
+//                    ( (HttpServletResponse)response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT");
 //                    if (!response.isCommitted()) {
 //                        ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_FOUND);
 //                        log.info(((HttpServletRequest) request).getContextPath());

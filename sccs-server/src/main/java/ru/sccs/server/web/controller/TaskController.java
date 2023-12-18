@@ -12,7 +12,7 @@ import ru.sccs.server.domain.user.User;
 import ru.sccs.server.repository.TaskRepository;
 import ru.sccs.server.repository.UserRepository;
 import ru.sccs.server.web.dto.task.TaskAddAssigneeRequest;
-import ru.sccs.server.web.dto.task.TaskCreationDTO;
+import ru.sccs.server.web.dto.task.TaskCreationDto;
 import ru.sccs.server.web.dto.task.TaskStatusUpdateRequest;
 import ru.sccs.server.web.mapper.TaskMapper;
 
@@ -58,7 +58,7 @@ public class TaskController {
 
     @PostMapping("/createTask")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Task createTask(@RequestBody TaskCreationDTO taskCreationDTO) {
+    public Task createTask(@RequestBody TaskCreationDto taskCreationDTO) {
         return taskRepository.save(taskMapper.toEntity(taskCreationDTO));
     }
 

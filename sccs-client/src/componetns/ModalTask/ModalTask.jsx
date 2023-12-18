@@ -65,11 +65,11 @@ export const ModalTask = ({ users, chatMessages, setChatMessages, isAdmin, task,
     const send = (event) => {
         let messageContent = document.getElementById("msg" + task.id).value;
 
-        let userId = jwtDecode(sessionStorage.getItem("access_token")).id;
+        let userId = jwtDecode(sessionStorage.getItem("access_token")).username;
 
         console.log(userId);
 
-        stompClient.send(`/app/taskChat.${task.id}.send`, {}, JSON.stringify({ id: userId, message: messageContent }));
+        stompClient.send(`/app/taskChat.${task.id}.send`, {}, JSON.stringify({ username: userId, message: messageContent }));
 
         event.preventDefault();
     }

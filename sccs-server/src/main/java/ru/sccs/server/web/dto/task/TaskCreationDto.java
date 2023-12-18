@@ -3,7 +3,7 @@ package ru.sccs.server.web.dto.task;
 import lombok.Data;
 
 @Data
-public class TaskCreationDTO {
+public class TaskCreationDto {
 
     private String title;
     private String description;

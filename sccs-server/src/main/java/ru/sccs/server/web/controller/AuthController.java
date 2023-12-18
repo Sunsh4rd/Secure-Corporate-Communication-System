@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -44,6 +45,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserCreationDTO userCreationDTO) {
         log.info(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        log.info(userCreationDTO.getUsername());
+        log.info(userCreationDTO.getPassword());
         Authentication authenticate = authenticationManager
                 .authenticate(
                         new UsernamePasswordAuthenticationToken(
@@ -51,31 +54,35 @@ public class AuthController {
                         )
                 );
         log.info(authenticate);
-        Long id = userRepository.findByUsername(userCreationDTO.getUsername()).orElseThrow(() -> new IllegalArgumentException("no username")).getId();
-        String refreshToken = jwtUtil.generateRefreshToken(id, userCreationDTO.getUsername(), Role.valueOf(authenticate.getAuthorities().stream().toList().get(0).toString()));
-        String accessToken = jwtUtil.generateAccessToken(id, userCreationDTO.getUsername(), Role.valueOf(authenticate.getAuthorities().stream().toList().get(0).toString()));
-        ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", refreshToken)
-                .httpOnly(true)
-                .sameSite("Strict")
-                .path("/")
-                .maxAge(86400)
-                .build();
-        ResponseCookie accessCookie = ResponseCookie.from("access_token", accessToken)
-                .httpOnly(true)
-                .sameSite("Strict")
-                .path("/")
-                .maxAge(86400)
-                .build();
-        log.info(accessToken);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.SET_COOKIE, refreshCookie.toString());
-        headers.add(HttpHeaders.SET_COOKIE, accessCookie.toString());
+        try {
+            Long id = userRepository.findByUsername(userCreationDTO.getUsername()).orElseThrow(() -> new AuthenticationCredentialsNotFoundException("no username")).getId();
+            String refreshToken = jwtUtil.generateRefreshToken(id, userCreationDTO.getUsername(), Role.valueOf(authenticate.getAuthorities().stream().toList().get(0).toString()));
+            String accessToken = jwtUtil.generateAccessToken(id, userCreationDTO.getUsername(), Role.valueOf(authenticate.getAuthorities().stream().toList().get(0).toString()));
+            ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", refreshToken)
+                    .httpOnly(true)
+                    .sameSite("Strict")
+                    .path("/")
+                    .maxAge(86400)
+                    .build();
+            ResponseCookie accessCookie = ResponseCookie.from("access_token", accessToken)
+                    .httpOnly(true)
+                    .sameSite("Strict")
+                    .path("/")
+                    .maxAge(86400)
+                    .build();
+            log.info(accessToken);
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.SET_COOKIE, refreshCookie.toString());
+            headers.add(HttpHeaders.SET_COOKIE, accessCookie.toString());
 //        headers.add(HttpHeaders.LOCATION, "http://localhost:8080/auth/refresh");
 //        return new ResponseEntity<>(Map.of("access_token", accessToken), headers, HttpStatus.FOUND);
-        return ResponseEntity.ok()
+            return ResponseEntity.ok()
 //                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-                .headers(headers)
-                .build();
+                    .headers(headers)
+                    .body(Map.of("access_token", accessToken));
+        } catch (AuthenticationCredentialsNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @PostMapping("/register")
@@ -99,7 +106,13 @@ public class AuthController {
             String newRefresh = jwtUtil.generateRefreshToken(Long.valueOf(claims.get(0)), claims.get(1), Role.valueOf(claims.get(2)));
             String newAccess = jwtUtil.generateAccessToken(Long.valueOf(claims.get(0)), claims.get(1), Role.valueOf(claims.get(2)));
 
-            ResponseCookie cookie = ResponseCookie.from("refresh_token", newRefresh)
+            ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", newRefresh)
+                    .httpOnly(true)
+                    .sameSite("Strict")
+                    .path("/")
+                    .maxAge(86400)
+                    .build();
+            ResponseCookie accessCookie = ResponseCookie.from("access_token", newAccess)
                     .httpOnly(true)
                     .sameSite("Strict")
                     .path("/")
@@ -108,18 +121,22 @@ public class AuthController {
             log.info("new access {}", newAccess);
             log.info("new refresh {}", newRefresh);
 
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.SET_COOKIE, refreshCookie.toString());
+            headers.add(HttpHeaders.SET_COOKIE, accessCookie.toString());
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                    .body(Map.of("access_token", newAccess));
+                    .headers(headers)
+                    .build();
         } catch (TokenExpiredException e) {
             log.error("redirecting to login");
-            return ResponseEntity.status(HttpStatus.FOUND).
-                    headers(new HttpHeaders(
-                            CollectionUtils.toMultiValueMap(
-                                    Map.of(HttpHeaders.LOCATION, List.of("http://localhost:8080/auth/login"))
-                            ))
-                    ).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//            return ResponseEntity.status(HttpStatus.FOUND).
+//                    headers(new HttpHeaders(
+//                            CollectionUtils.toMultiValueMap(
+//                                    Map.of(HttpHeaders.LOCATION, List.of("http://localhost:8080/auth/login"))
+//                            ))
+//                    ).build();
         }
     }
 

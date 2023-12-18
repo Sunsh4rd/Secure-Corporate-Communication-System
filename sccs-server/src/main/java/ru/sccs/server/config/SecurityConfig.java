@@ -67,6 +67,15 @@ public class SecurityConfig {
                                         }
                                 )
 //                                .accessDeniedHandler(
+//                                        (request, response, authenticationException) -> {
+//                                            response.addCookie(WebUtils.getCookie(request, "refresh_token"));
+////                                            response.addHeader("Origin", "http://localhost:3000");
+////                                            response.addHeader("Access-Control-Allow-Credentials", "true");
+////                                            response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//                                            response.sendRedirect("/auth/refresh");
+//                                        }
+//                                )
+//                                .accessDeniedHandler(
 //                                        (request, response, accessDeniedException) -> {
 //                                            response.addCookie(WebUtils.getCookie(request, "refresh_token"));
 //                                            response.sendRedirect("/auth/refresh");

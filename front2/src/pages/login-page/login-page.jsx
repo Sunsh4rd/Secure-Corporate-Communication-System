@@ -3,6 +3,8 @@ import styles from './login-page.module.css'
 import Input from '../../ui/input/input';
 import useForm from '../../hooks/useForm';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { fetchLogin } from '../../services/thunks/thunks';
 
 export const inputsLoginPage = [
   {
@@ -27,13 +29,13 @@ const LoginPage = () => {
     password: '',
   });
 
+  const dispatch = useDispatch();
+
   const hadleSubmit = (e) => {
     e.preventDefault();
    
-    // dispatch(fetchLoginThunk(userData.email,  userData.password));
+    dispatch(fetchLogin(userData.userName,  userData.password));
   };
-
-  console.log(userData);
 
   return (
     <div className={styles.wrapper}>

@@ -4,7 +4,7 @@ import lombok.Data;
 import ru.sccs.server.domain.task.Status;
 
 @Data
-public class TaskDTO {
+public class TaskDto {
 
     private Long id;
     private String title;

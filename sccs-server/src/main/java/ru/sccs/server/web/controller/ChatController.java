@@ -12,8 +12,10 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import ru.sccs.server.domain.task.ChatMessage;
 import ru.sccs.server.domain.task.Task;
+import ru.sccs.server.domain.user.User;
 import ru.sccs.server.repository.ChatMessageRepository;
 import ru.sccs.server.repository.TaskRepository;
+import ru.sccs.server.repository.UserRepository;
 
 import java.time.LocalDateTime;
 
@@ -24,6 +26,7 @@ public class ChatController {
 
     private final TaskRepository taskRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final UserRepository userRepository;
 
 //    @MessageMapping("/chat.sendMessage")
 //    @SendTo("/topic/public")
@@ -50,10 +53,12 @@ public class ChatController {
                 .orElseThrow(() -> new IllegalArgumentException("task not found"));
         var mapper = new ObjectMapper();
         ClientMessage clientMessage = mapper.readValue(message, ClientMessage.class);
+        User sender = userRepository.findByUsername(clientMessage.getUsername()).orElseThrow(() -> new IllegalArgumentException("no username"));
         ChatMessage msg = ChatMessage.builder()
                 .content(clientMessage.getMessage())
                 .sentAt(LocalDateTime.now().toString())
-                .senderId(clientMessage.getId())
+                .sender(sender)
+//                .senderId(clientMessage.getId())
                 .build();
         task.getChatMessages().add(msg);
         chatMessageRepository.save(msg);

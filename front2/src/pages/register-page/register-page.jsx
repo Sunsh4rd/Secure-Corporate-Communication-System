@@ -1,8 +1,10 @@
 import React from 'react'
 import styles from '../login-page/login-page.module.css'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import useForm from '../../hooks/useForm';
 import Input from '../../ui/input/input';
+import { useDispatch } from 'react-redux';
+import {fetchRegister} from '../../services/thunks/thunks'
 
 
 export  const inputsRegisterPage = [
@@ -22,12 +24,14 @@ export  const inputsRegisterPage = [
 
 const RegisterPage = () => {
   
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   
   const { hadleChangeUserData, userData } = useForm({
     userName: '',
     password: '',
   });
+
+  const dispatch = useDispatch();
 
   const hadleSubmit = (e) => {
     e.preventDefault();
