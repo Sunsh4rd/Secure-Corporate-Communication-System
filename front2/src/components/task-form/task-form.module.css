@@ -1,0 +1,74 @@
+.main_container {
+  background-color: white;
+  padding: 30px 60px;
+  border-radius: 20px;
+  width: 500px;
+}
+
+.title {
+  margin-bottom: 40px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin: 0;
+  margin-bottom: 12px;
+}
+
+.input_text_area {
+  font-family: Roboto;
+  border: 0;
+  max-width: 800px;
+  width: 100%;
+  outline: 1px solid black;
+  padding: 0 12px;
+  padding-top: 6px;
+  border-radius: 10px;
+
+  font-family: Roboto;
+  font-size: 16px;
+  resize: none; /* Запрещаем изменять размер */
+  max-width: 500px;
+  box-sizing: border-box;
+} 
+
+.input_name, .input_text_area::placeholder {
+  font-family: Roboto;
+  font-size: 16px;
+}
+
+
+.input_name {
+  font-family: Roboto;
+  border: 0;
+  outline: 1px solid black;
+  border-radius: 20px;
+  padding: 6px 12px;
+  margin-bottom: 20px;
+}
+
+.input_name:valid{
+  border-bottom: 0;
+}
+
+.button_submit {
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 20px;
+  font-size: 24px;
+  text-align: center;
+  border-radius: 10px;
+  padding: 6px 12px;
+  background-color: rgb(227,252,239);
+  color: rgb(67,146,119);
+  border: 0;
+  transition: opacity .3s;
+}
+
+.button_submit:hover {
+  opacity: .75;
+}

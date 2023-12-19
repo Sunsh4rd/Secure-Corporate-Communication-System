@@ -15,8 +15,9 @@
 
 .status_container {
   display: flex;
-  gap: 6px;
+  gap: 12px;
   align-items: center;
+  justify-content: space-between;
 }
 
 .status__container_ul {
@@ -38,9 +39,10 @@
 .status {
   margin: 0;
   border-radius: 3px;
-  padding: 0 6px;
+  padding: 2px 8px;
   font-size: 16px;
   cursor: pointer;
+  text-wrap: nowrap;
   transition: box-shadow .3s ease-in;
   
 }
@@ -72,6 +74,7 @@
   display: flex;
   gap: 12px;
   align-items: center;
+  justify-content: space-between;
   
 } 
 
@@ -106,6 +109,11 @@
 .description_container, .assignee_container, .main_container, .status_container {
   margin-bottom: 23px;
 }
+
+.status_container {
+  /* margin-bottom: 0; */
+}
+
 
 .message {
 
@@ -183,6 +191,29 @@
   border-radius: 10px;
   padding: 6px 12px;
   transition: opacity .3s ease;
+}
+
+.button_submit_statue_and_assignee {
+  padding: 6px 4px;
+  max-width: 160px;
+  background-color: rgb(216, 53, 48);
+  border-radius: 2px;
+  color: white;
+  font-family: Roboto;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; 
+  letter-spacing: -0.4px;
+
+  /* max-height: 52px; */
+  transition: color .2s ease-in, background-color .3s;
+  cursor: pointer;
+}
+
+.button_submit_statue_and_assignee:hover {
+  background-color: black;
+
 }
 
 .button_submit:hover {

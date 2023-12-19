@@ -1,6 +1,6 @@
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import { getTasksRequest, getTasksRequestFailed, getTasksRequestSuccessed, getUniqueTaskRequest, getUniqueTaskRequestFailed, getUniqueTaskRequestSuccessed, logingRequest, loginingRequestFailed, loginingRequestSuccess, registrationRequest, registrationRequestFailed, registrationRequestSuccessed, setMessage, setReceivedMessage, setStompClient } from "../slices/user-slice";
+import { addNewAssigneeRequest, addNewAssigneeRequestFailed, addNewAssigneeRequestSucces, addNewTaskRequest, addNewTaskRequestFailed, addNewTaskRequestSuccess, getAllNotAssigneeRequest, getAllNotAssigneeRequestFailed, getAllNotAssigneeRequestSuccess, getTasksRequest, getTasksRequestFailed, getTasksRequestSuccessed, getUniqueTaskRequest, getUniqueTaskRequestFailed, getUniqueTaskRequestSuccessed, logingRequest, loginingRequestFailed, loginingRequestSuccess, registrationRequest, registrationRequestFailed, registrationRequestSuccessed, sentNewStatusRequest, sentNewStatusRequestFailed, sentNewStatusRequestSuccess, setMessage, setReceivedMessage, setStompClient } from "../slices/user-slice";
 
 export const defaultHeaders = {
   "Content-Type": "application/json"
@@ -71,6 +71,86 @@ export const getUniqueTask = (id) => {
   return fetch(`http://localhost:8080/tasks/${id}`, options)
   .then(checkResponse); 
 };
+
+export const sentNewStatus = (taskId, taskStatus) => {
+  const body = {
+    status: taskStatus
+  };
+  const options = makeFetchOptions('PUT', defaultHeadersWithOrigin, body, true);
+  return fetch(`http://localhost:8080/tasks/${taskId}/updateStatus`, options)
+  .then(checkResponse); 
+};
+
+export const getAllNotAssignee = (taskId) => {
+  const options = makeFetchOptions('GET', defaultHeadersWithOrigin, false, true);
+  return fetch(`http://localhost:8080/user/notAssigned/${taskId}`, options)
+  .then(checkResponse); 
+};
+
+export const addNewAssignee = (taskId, name) => {
+  const body = {
+    username: name
+  };
+  const options = makeFetchOptions('PUT', defaultHeadersWithOrigin, body, true);
+  return fetch(`http://localhost:8080/tasks/${taskId}/addAssignee`, options)
+  .then(checkResponse); 
+};
+
+export const addNewTask = (title, description) => {
+  const body = {
+    title: title,
+    description: description
+  };
+  console.log(body);
+  const options = makeFetchOptions('POST', defaultHeadersWithOrigin, body, true);
+  return fetch(`http://localhost:8080/tasks/createTask`, options)
+  .then(checkResponse); 
+};
+
+export const fetchAddNewTask = (title, description) => async(dispatch) => {
+  try {
+    dispatch(addNewTaskRequest());
+    const response = await addNewTask(title, description);
+    // console.log(response); 
+    dispatch(addNewTaskRequestSuccess());
+  } catch (error) {
+    dispatch(addNewTaskRequestFailed(error))
+  }
+}
+
+export const fetchAddNewAssignee = (taskId, name) => async(dispatch) => {
+  try {
+    dispatch(addNewAssigneeRequest());
+    console.log(name);
+    const response = await addNewAssignee(taskId, name);
+    // console.log(response); 
+    dispatch(addNewAssigneeRequestSucces());
+  } catch (error) {
+    dispatch(addNewAssigneeRequestFailed(error))
+  }
+}
+
+export const fetchGetAllNotAssignee = (taskId) => async(dispatch) => {
+  try {
+    dispatch(getAllNotAssigneeRequest());
+    const response = await getAllNotAssignee(taskId);
+    // console.log(response); 
+    dispatch(getAllNotAssigneeRequestSuccess(response));
+  } catch (error) {
+    dispatch(getAllNotAssigneeRequestFailed(error))
+  }
+}
+
+export const fetchSentNewStatus = (taskId, taskStatus) => async(dispatch) => {
+  try {
+    dispatch(sentNewStatusRequest());
+    const response = await sentNewStatus(taskId, taskStatus);
+    // console.log(response); 
+    dispatch(sentNewStatusRequestSuccess());
+  } catch (error) {
+    dispatch(sentNewStatusRequestFailed(error))
+  }
+}
 
 export const fetchGetUniqueTask= (id) => async(dispatch) => {
   try {

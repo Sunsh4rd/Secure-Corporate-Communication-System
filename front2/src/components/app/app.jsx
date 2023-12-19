@@ -9,6 +9,7 @@ import TaskPopup from '../task-popup/task-popup';
 import AdminPage from '../../pages/admin-page/admin-page';
 import TaskPopupAdmin from '../task-popup-admin/task-popup-admin';
 import { useSelector } from 'react-redux';
+import TaskForm from '../task-form/task-form';
 
 
 const App = () => {
@@ -39,6 +40,12 @@ const App = () => {
             element={
            <Modal>
               <TaskPopupAdmin />
+           </Modal>}/>
+           <Route 
+            path='/admin/form'
+            element={
+           <Modal>
+              <TaskForm />
            </Modal>}/>
          </Routes>
          )}

@@ -25,7 +25,13 @@ function AdminPage() {
     <>
       {!isAdmin ? (
         <section className={styles.main_container}>
-        <h1 className={styles.title}>Менеджер задач (админ)</h1>
+        <div className={styles.title_and_button_container}>
+          <h1 className={styles.title}>Менеджер задач (админ)</h1>
+          <Link className={styles.link} to={`/admin/form`} state={{ background: location }}>
+            <button className={styles.button}>Добавить задачу</button>
+          </Link>
+        </div>
+
         <ul className={styles.columns_container}>
           <li className={styles.column}>
             <h2 className={styles.column__title}>Запланировано</h2>
@@ -80,7 +86,7 @@ function AdminPage() {
                 if (task.status === 'IN_PROGRESS') {
                   return (
                   <li className={styles.task__item} key={task.id}>
-                    <Link className={styles.link} to={'/popup'} state={{ background: location }}>
+                    <Link className={styles.link} to={`/popup-admin/${task.id}`} state={{ background: location }}>
                       <h3 className={styles.task__title}>{task.title}</h3>
                       <p className={styles.task__description}>
                         {task.description}
@@ -102,7 +108,7 @@ function AdminPage() {
                 if (task.status === 'DONE') {
                   return (
                   <li className={styles.task__item} key={task.id}>
-                    <Link className={styles.link} to={'/popup'} state={{ background: location }}>
+                    <Link className={styles.link} to={`/popup-admin/${task.id}`} state={{ background: location }}>
                       <h3 className={styles.task__title}>{task.title}</h3>
                       <p className={styles.task__description}>
                         {task.description}
