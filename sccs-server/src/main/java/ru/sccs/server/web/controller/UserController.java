@@ -3,6 +3,7 @@ package ru.sccs.server.web.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.sccs.server.domain.user.Role;
 import ru.sccs.server.domain.user.User;
 import ru.sccs.server.repository.UserRepository;
 import ru.sccs.server.web.dto.user.UserCreationDTO;
@@ -22,7 +23,7 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> getUser() {
-        return userRepository.findAll();
+        return userRepository.findByRole(Role.ROLE_USER);
     }
 
     @GetMapping("/{id}")
