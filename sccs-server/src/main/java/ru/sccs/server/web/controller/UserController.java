@@ -26,6 +26,12 @@ public class UserController {
         return userRepository.findByRole(Role.ROLE_USER);
     }
 
+    @GetMapping("/notAssigned/{taskId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<User> getAllNotAssignedUsers(@PathVariable Long taskId) {
+        return userRepository.findAllNotAssignedToTask(taskId);
+    }
+
     @GetMapping("/{id}")
     public User getUser(@PathVariable Long id) {
         return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("user not found"));
