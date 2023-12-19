@@ -27,13 +27,34 @@
   
 }
 
+.status__container_ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  gap: 12px;
+}
+
 .status {
   margin: 0;
-  background-color: rgb(222,235,255);
   border-radius: 3px;
   padding: 0 6px;
-  color: rgb(43,111,214);
   font-size: 16px;
+}
+
+.status_planned {
+  background-color: rgb(236,237,240);
+  color: rgb(110,122,143);
+}
+
+.status_process {
+  background-color: rgb(222,235,255);
+  color: rgb(43,111,214);
+}
+
+.status_done {
+  background-color: rgb(227,252,239);
+  color: rgb(67,146,119);
 }
 
 .assignee_container {

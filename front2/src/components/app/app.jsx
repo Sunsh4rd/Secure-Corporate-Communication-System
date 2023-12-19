@@ -8,6 +8,7 @@ import Modal from '../modal/modal';
 import TaskPopup from '../task-popup/task-popup';
 import AdminPage from '../../pages/admin-page/admin-page';
 import TaskPopupAdmin from '../task-popup-admin/task-popup-admin';
+import { useSelector } from 'react-redux';
 
 
 const App = () => {
@@ -23,17 +24,18 @@ const App = () => {
           <Route path='/login' element= {<LoginPage />} />
           <Route path='/register' element= {<RegisterPage />} />
           <Route path='/admin' element= {<AdminPage />} />
+
         </Routes>
         {background && (
         <Routes> 
           <Route 
-            path='/popup'
+            path='/popup/:id'
             element={
            <Modal>
               <TaskPopup />
            </Modal>}/>
            <Route 
-            path='/admin/popup-admin'
+            path='/popup-admin/:id'
             element={
            <Modal>
               <TaskPopupAdmin />

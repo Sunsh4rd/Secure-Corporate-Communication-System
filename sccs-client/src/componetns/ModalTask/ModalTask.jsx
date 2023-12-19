@@ -1,6 +1,6 @@
 import { Modal, ModalBody, ModalFooter, ModalHeader, Button, Row, Col, CloseButton } from "react-bootstrap"
 import Loader from "../Loader/Loader.tsx"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SockJS from 'sockjs-client';
 import { over } from 'stompjs';
 import { setDoneStatus, setInProgressStatus } from "../../api/tasks.js";
@@ -19,16 +19,19 @@ export const ModalTask = ({ users, chatMessages, setChatMessages, isAdmin, task,
     const [chat, setChat] = useState(chatMessages);
 
     const [stompClient, setStompClient] = useState(null);
+    // const clientRef = useRef(null)
 
     useEffect(() => {
         console.log(task);
         if (open) {
             const stomp = connectToWebSocket(task.id, chatMessages, (chatMessages) => setChat(chatMessages));
             setStompClient(stomp);
+            // setStompClient(stomp);
         }
         else if (stompClient) {
             stompClient.disconnect(() => console.log("disconnected"));
             setStompClient(null);
+
         }
         // sock = new SockJS("http://localhost:8080/ws");
         // stompClient = over(sock);

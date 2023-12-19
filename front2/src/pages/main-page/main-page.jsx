@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./main-page.module.css";
 import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchGetTasks } from "../../services/thunks/thunks";
 
 function MainPage() {
 
   const location = useLocation();
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchGetTasks())
+  }, [dispatch])
+
+  const data = useSelector(store => store.userReducer.tasksArray) || []
+  
+
+  if (data === null || data.length === 0 || !data) {
+    return null
+  } 
 
   return (
     <section className={styles.main_container}>
@@ -13,48 +28,91 @@ function MainPage() {
         <li className={styles.column}>
           <h2 className={styles.column__title}>Запланировано</h2>
           <ul className={styles.tasks_container}>
-            <li className={styles.task__item}>
-              <Link className={styles.link} to={'/popup'} state={{ background: location }}>
-                <h3 className={styles.task__title}>Добавить в таблицу стобец date</h3>
+          {Array.isArray(data)
+        ? data.map((task) => {
+          if (task.status === 'TODO') {
+            return (
+            <li className={styles.task__item} key={task.id}>
+              <Link className={styles.link} to={`/popup/${task.id}`} state={{ background: location }}>
+                <h3 className={styles.task__title}>{task.title}</h3>
                 <p className={styles.task__description}>
-                  Добавить в таблицу стобец date чтобы всегда знать актуальную дату. Очень не хватает этих данных пожалуйстиа скорее
+                  {task.description}
                 </p>
               </Link>
-            </li>
-            <li className={styles.task__item}>
-              <Link className={styles.link} to={'/popup'} state={{ background: location }}>
-                <h3 className={styles.task__title}>Delete prod DB</h3>
-                <p className={styles.task__description}>
-                  I'm absolutely sure, we need to delete all db
-                </p>
-              </Link>
-            </li>
+            </li> 
+            )
+          } else {
+            return null
+          }
+          })
+        : null}
+            {/* {data.length === 0} */}
+            {/* {data?.map(task => {
+              if (data.length  === 0) {
+                return null
+              } else {
+                
+              }
+              if (task.status === 'TODO') {
+                return (
+                <li className={styles.task__item} key={task.id}>
+                  <Link className={styles.link} to={`/popup/${task.id}`} state={{ background: location }}>
+                    <h3 className={styles.task__title}>{task.title}</h3>
+                    <p className={styles.task__description}>
+                      {task.description}
+                    </p>
+                  </Link>
+                </li> 
+                )
+              } else {
+                return null
+              }
+            }
+            )} */}
           </ul>
         </li>
         <li className={styles.column}>
           <h2 className={styles.column__title}>В процессе</h2>
           <ul className={styles.tasks_container}>
-            <li className={styles.task__item}>
-              <Link className={styles.link} to={'/popup'} state={{ background: location }}>
-                <h3 className={styles.task__title}>Delete prod DB</h3>
-                <p className={styles.task__description}>
-                  I'm absolutely sure, we need to delete all db
-                </p>
-              </Link>
-            </li>
+          {data.map(task => {
+              if (task.status === 'IN_PROGRESS') {
+                return (
+                <li className={styles.task__item} key={task.id}>
+                  <Link className={styles.link} to={'/popup'} state={{ background: location }}>
+                    <h3 className={styles.task__title}>{task.title}</h3>
+                    <p className={styles.task__description}>
+                      {task.description}
+                    </p>
+                  </Link>
+                </li> 
+                )
+              } else {
+                return null
+              }
+            }
+            )}
           </ul>
         </li>
         <li className={styles.column}>
           <h2 className={styles.column__title}>Готовые</h2>
           <ul className={styles.tasks_container}>
-            <li className={styles.task__item}>
-              <Link className={styles.link} to={'/popup'} state={{ background: location }}>
-                <h3 className={styles.task__title}>Delete prod DB</h3>
-                <p className={styles.task__description}>
-                  I'm absolutely sure, we need to delete all db
-                </p>
-              </Link>
-            </li>
+          {data.map(task => {
+              if (task.status === 'DONE') {
+                return (
+                <li className={styles.task__item} key={task.id}>
+                  <Link className={styles.link} to={'/popup'} state={{ background: location }}>
+                    <h3 className={styles.task__title}>{task.title}</h3>
+                    <p className={styles.task__description}>
+                      {task.description}
+                    </p>
+                  </Link>
+                </li> 
+                )
+              } else {
+                return null
+              }
+            }
+            )}
           </ul>
         </li>
       </ul>

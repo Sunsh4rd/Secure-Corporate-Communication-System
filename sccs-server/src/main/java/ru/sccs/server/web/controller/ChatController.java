@@ -46,7 +46,7 @@ public class ChatController {
     @MessageMapping("/taskChat.{taskId}.send")
     @SendTo("/taskChat.{taskId}")
     @Transactional
-    public ChatMessage receive(@Payload String message, @DestinationVariable("taskId") String taskId) throws JsonProcessingException {
+    public Task receive(@Payload String message, @DestinationVariable("taskId") String taskId) throws JsonProcessingException {
 //        messagingTemplate.convertAndSend("taskChat/task/"+taskId, message);
         log.info("received " + message);
         Task task = taskRepository.findById(Long.valueOf(taskId))
@@ -67,7 +67,7 @@ public class ChatController {
         taskRepository.save(task);
 //        return clientMessage.getMessage();
 //        return message;
-        return msg;
+        return task;
     }
 
 }

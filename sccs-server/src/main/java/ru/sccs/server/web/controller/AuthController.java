@@ -79,7 +79,7 @@ public class AuthController {
             return ResponseEntity.ok()
 //                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
                     .headers(headers)
-                    .body(Map.of("access_token", accessToken));
+                    .body(Map.of("is_admin", authenticate.getAuthorities().stream().toList().get(0).toString().equals("ROLE_ADMIN")));
         } catch (AuthenticationCredentialsNotFoundException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

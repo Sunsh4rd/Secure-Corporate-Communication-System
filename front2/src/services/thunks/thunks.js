@@ -1,15 +1,17 @@
-import { logingRequest, loginingRequestFailed, loginingRequestSuccess, registrationRequest, registrationRequestFailed, registrationRequestSuccessed } from "../slices/user-slice";
+import SockJS from "sockjs-client";
+import { over } from "stompjs";
+import { getTasksRequest, getTasksRequestFailed, getTasksRequestSuccessed, getUniqueTaskRequest, getUniqueTaskRequestFailed, getUniqueTaskRequestSuccessed, logingRequest, loginingRequestFailed, loginingRequestSuccess, registrationRequest, registrationRequestFailed, registrationRequestSuccessed, setMessage, setReceivedMessage, setStompClient } from "../slices/user-slice";
 
-const defaultHeaders = {
+export const defaultHeaders = {
   "Content-Type": "application/json"
 };
 
-const defaultHeadersWithOrigin = {
+export const defaultHeadersWithOrigin = {
   "Content-Type": "application/json",
   Origin: "http://localhost:3000",
 }
 
-const makeFetchOptions = (method, headers, body, isCredential) => {
+export const makeFetchOptions = (method, headers, body, isCredential) => {
   const options = {
     method: !!method ? method : 'GET',
     headers,
@@ -29,7 +31,6 @@ export const checkResponse = (res) => {
   }
   return res.json()
   .then((err) => {
-    console.log(err)
 
     err.httpCode = res.status;
     return Promise.reject(err);
@@ -42,7 +43,7 @@ export const registerUser = (name, password) => {
     password: password,
   };
   const options = makeFetchOptions('POST', defaultHeaders, body, false);
-  console.log(options);
+  // console.log(options);
   return fetch('http://localhost:8080/auth/register', options)
   .then(checkResponse); 
 };
@@ -57,6 +58,42 @@ export const loginUser = (name, password) => {
   .then(checkResponse); 
 };
 
+export const getTasks = () => {
+  const options = makeFetchOptions('GET', defaultHeadersWithOrigin,false, true);
+  return fetch('http://localhost:8080/tasks', options)
+  .then(checkResponse); 
+};
+
+
+export const getUniqueTask = (id) => {
+  const options = makeFetchOptions('GET', defaultHeadersWithOrigin, false, true);
+  // console.log(options);
+  return fetch(`http://localhost:8080/tasks/${id}`, options)
+  .then(checkResponse); 
+};
+
+export const fetchGetUniqueTask= (id) => async(dispatch) => {
+  try {
+    dispatch(getUniqueTaskRequest());
+    const response = await getUniqueTask(id);
+    // console.log(response); 
+    dispatch(getUniqueTaskRequestSuccessed(response));
+  } catch (error) {
+    dispatch(getUniqueTaskRequestFailed(error))
+  }
+}
+
+export const fetchGetTasks = () => async(dispatch) => {
+  try {
+    dispatch(getTasksRequest());
+    const response = await getTasks();
+    // console.log(response); 
+    dispatch(getTasksRequestSuccessed(response));
+  } catch (error) {
+    dispatch(getTasksRequestFailed(error))
+  }
+}
+
 export const fetchRegister = (name, password) => async(dispatch) => {
   try {
     dispatch(registrationRequest());
@@ -70,11 +107,47 @@ export const fetchRegister = (name, password) => async(dispatch) => {
 export const fetchLogin = (name, password) => async(dispatch) => {
   try {
     dispatch(logingRequest());
+    if (!localStorage.getItem('userName')) {
+
+    } else {
+      localStorage.removeItem('userName')
+    }
+    // console.log(name);
     const response = await loginUser(name, password);
-    console.log(response); 
-    dispatch(loginingRequestSuccess());
+    localStorage.setItem('userName', name)
+    const isAdmin = response.is_admin
+    console.log(isAdmin)
+    dispatch(loginingRequestSuccess({name, isAdmin}));
   } catch (error) {
     dispatch(loginingRequestFailed(error))
   }
 }
+
+export const connectToWebSocket = (id, chat, setChat) => {
+  const stompClient = over(new SockJS('http://localhost:8080/ws'));
+  stompClient.debug = null; // Установите debug в null, чтобы отключить вывод сообщений
+
+  const onMessageReceived = (msg) => {
+    console.log(JSON.parse(msg.body))
+
+
+    setChat([...chat, JSON.parse(msg.body)])
+  }
+
+  const onConnected = () => {
+    stompClient.subscribe(`/taskChat.${id}`, onMessageReceived);
+  }
+
+  stompClient.connect({}, onConnected);
+
+  return stompClient
+
+  // stompClient.subscribe(`/taskChat.${id}`, (message) => {
+  //   const data = JSON.parse(message.body);
+  //   console.log('Получено сообщение от сервера:', data);
+  //   dispatch(setReceivedMessage(data));
+  // });
+
+  // dispatch(setStompClient(stompClient));
+};
 
