@@ -8,21 +8,13 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.context.annotation.Bean;
-import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
-import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 import ru.sccs.server.service.impl.SystemUserDetailsServiceImpl;
 import ru.sccs.server.web.security.JwtUtil;
@@ -46,7 +38,7 @@ public class JwtFilter extends GenericFilterBean {
             String jwt = tokenCookie.getValue();
 //            String jwt = authorization.substring(7);
             if (jwt.isBlank()) {
-                ( (HttpServletResponse)response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT");
+                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT");
             } else {
                 try {
                     String username = jwtUtil.validateTokenAndRetrieveClaim(jwt);

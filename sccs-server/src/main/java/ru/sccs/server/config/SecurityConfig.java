@@ -21,7 +21,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.util.WebUtils;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -56,16 +55,16 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception ->
-                        exception
-                                .authenticationEntryPoint(
-                                        (request, response, authenticationException) -> {
-                                            response.addCookie(WebUtils.getCookie(request, "refresh_token"));
+                                exception
+                                        .authenticationEntryPoint(
+                                                (request, response, authenticationException) -> {
+                                                    response.addCookie(WebUtils.getCookie(request, "refresh_token"));
 //                                            response.addHeader("Origin", "http://localhost:3000");
 //                                            response.addHeader("Access-Control-Allow-Credentials", "true");
 //                                            response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-                                            response.sendRedirect("/auth/refresh");
-                                        }
-                                )
+                                                    response.sendRedirect("/auth/refresh");
+                                                }
+                                        )
 //                                .accessDeniedHandler(
 //                                        (request, response, authenticationException) -> {
 //                                            response.addCookie(WebUtils.getCookie(request, "refresh_token"));

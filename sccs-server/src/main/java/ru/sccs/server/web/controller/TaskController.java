@@ -43,7 +43,7 @@ public class TaskController {
             return taskRepository.findAll();
         }
         return taskRepository.findAll()
-        .stream()
+                .stream()
                 .filter(task -> task.getAssignees().contains(
                         ((SystemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser()
                 )).collect(Collectors.toList());

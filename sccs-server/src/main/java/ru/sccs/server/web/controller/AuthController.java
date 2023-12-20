@@ -16,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
@@ -134,11 +133,15 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.FOUND).
                     headers(new HttpHeaders(
                             CollectionUtils.toMultiValueMap(
-                                    Map.of(HttpHeaders.LOCATION, List.of("http://localhost:3000/login"))
+                                    Map.of(HttpHeaders.LOCATION, List.of("/auth/newLogin"))
                             ))
                     ).build();
         }
     }
 
+    @GetMapping("/newLogin")
+    ResponseEntity<?> newLogin(HttpServletRequest request) {
+        return ResponseEntity.ok().build();
+    }
 
 }
