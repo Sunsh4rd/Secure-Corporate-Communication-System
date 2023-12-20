@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.sccs.server.domain.task.ChatMessage;
 import ru.sccs.server.domain.task.Task;
+import ru.sccs.server.domain.user.Role;
 import ru.sccs.server.domain.user.User;
 import ru.sccs.server.repository.TaskRepository;
 import ru.sccs.server.repository.UserRepository;
@@ -15,6 +16,7 @@ import ru.sccs.server.web.dto.task.TaskAddAssigneeRequest;
 import ru.sccs.server.web.dto.task.TaskCreationDto;
 import ru.sccs.server.web.dto.task.TaskStatusUpdateRequest;
 import ru.sccs.server.web.mapper.TaskMapper;
+import ru.sccs.server.web.security.SystemUserDetails;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,11 +39,14 @@ public class TaskController {
     @GetMapping
     public List<Task> getAllTasks() {
         log.info(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        return taskRepository.findAll();
-//        .stream()
-//                .filter(task -> task.getAssignees().contains(
-//                        ((SystemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser()
-//                )).collect(Collectors.toList());
+        if (((SystemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities().stream().toList().get(0).toString().equals(Role.ROLE_ADMIN.name())) {
+            return taskRepository.findAll();
+        }
+        return taskRepository.findAll()
+        .stream()
+                .filter(task -> task.getAssignees().contains(
+                        ((SystemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser()
+                )).collect(Collectors.toList());
     }
 
     @GetMapping("/{taskId}")

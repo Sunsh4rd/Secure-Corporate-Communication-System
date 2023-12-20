@@ -69,6 +69,7 @@ export const userSlice = createSlice({
     },
 
     loginingRequestSuccess(state, action) {
+      console.log(action.payload.isAdmin);
       state.loginingRequest = false;
       state.loginingRequestSuccess = true;
       state.userData = action.payload.name; 

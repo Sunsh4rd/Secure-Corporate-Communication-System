@@ -6,6 +6,7 @@ import { checkResponse, connectToWebSocket, defaultHeadersWithOrigin, fetchGetUn
 import { clearCurrentTaks, setMessage } from "../../services/slices/user-slice";
 
 function TaskPopup() {
+  console.log(22);
   const id  = useParams();
   const dispatch = useDispatch();
   const stompClient = useRef(null);
@@ -115,7 +116,7 @@ function TaskPopup() {
     <div className={styles.message}>
       <h3 className={styles.message__title}>Обсуждение</h3>
       <ul className={styles.message__container}>
-        {data.chatMessages.map((task) => (
+        {/* {data.chatMessages.map((task) => (
         // {
         //   console.log(task);
         // }
@@ -128,7 +129,7 @@ function TaskPopup() {
           <p className={styles.message_text}>{task.content}</p>
         </li>
         )
-        )}
+        )} */}
 
       </ul>
     </div>

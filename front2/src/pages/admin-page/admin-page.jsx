@@ -21,12 +21,13 @@ function AdminPage() {
   if (data === null || data.length === 0 || !data) {
     return null
   } 
+  console.log(isAdmin);
   return (
     <>
       {!isAdmin ? (
         <section className={styles.main_container}>
         <div className={styles.title_and_button_container}>
-          <h1 className={styles.title}>Менеджер задач (админ)</h1>
+          <h1 className={styles.title}>Система коммуникации и управления задачами</h1>
           <Link className={styles.link} to={`/admin/form`} state={{ background: location }}>
             <button className={styles.button}>Добавить задачу</button>
           </Link>

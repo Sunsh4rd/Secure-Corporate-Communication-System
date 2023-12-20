@@ -23,7 +23,7 @@ function MainPage() {
 
   return (
     <section className={styles.main_container}>
-      <h1 className={styles.title}>Менеджер задач</h1>
+      <h1 className={styles.title}>Система коммуникации и управления задачами</h1>
       <ul className={styles.columns_container}>
         <li className={styles.column}>
           <h2 className={styles.column__title}>Запланировано</h2>
@@ -78,7 +78,7 @@ function MainPage() {
               if (task.status === 'IN_PROGRESS') {
                 return (
                 <li className={styles.task__item} key={task.id}>
-                  <Link className={styles.link} to={'/popup'} state={{ background: location }}>
+                  <Link className={styles.link} to={`/popup/${task.id}`} state={{ background: location }}>
                     <h3 className={styles.task__title}>{task.title}</h3>
                     <p className={styles.task__description}>
                       {task.description}
@@ -100,7 +100,7 @@ function MainPage() {
               if (task.status === 'DONE') {
                 return (
                 <li className={styles.task__item} key={task.id}>
-                  <Link className={styles.link} to={'/popup'} state={{ background: location }}>
+                  <Link className={styles.link} to={`/popup/${task.id}`} state={{ background: location }}>
                     <h3 className={styles.task__title}>{task.title}</h3>
                     <p className={styles.task__description}>
                       {task.description}

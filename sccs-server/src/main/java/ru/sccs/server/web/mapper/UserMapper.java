@@ -20,7 +20,7 @@ public interface UserMapper {
 
     @Named("defaultRole")
     default Role defaultRole(UserCreationDTO dto) {
-        return Role.ROLE_ADMIN;
+        return Role.ROLE_USER;
     }
 
 }

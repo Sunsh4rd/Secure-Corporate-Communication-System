@@ -13,6 +13,7 @@
   border-radius: 10px;
   padding: 4px 80px;
   border: 0;
+  text-align: center;
 }
 
 .title_and_button_container {
@@ -24,7 +25,7 @@
 
 .button {
   border: 0;
-  height: 40px;
+  height: 70px;
   background-color: rgb(255, 233, 222);
   color: rgb(235, 88, 59);
   font-size: 24px;

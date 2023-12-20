@@ -154,6 +154,7 @@ export const fetchSentNewStatus = (taskId, taskStatus) => async(dispatch) => {
 
 export const fetchGetUniqueTask= (id) => async(dispatch) => {
   try {
+    console.log(33);
     dispatch(getUniqueTaskRequest());
     const response = await getUniqueTask(id);
     // console.log(response); 
@@ -188,15 +189,17 @@ export const fetchLogin = (name, password) => async(dispatch) => {
   try {
     dispatch(logingRequest());
     if (!localStorage.getItem('userName')) {
-
+      //  console.log(11);
+      //  localStorage.setItem('userName', name)
     } else {
       localStorage.removeItem('userName')
+      // console.log(22);
     }
     // console.log(name);
     const response = await loginUser(name, password);
     localStorage.setItem('userName', name)
     const isAdmin = response.is_admin
-    console.log(isAdmin)
+    // console.log(isAdmin)
     dispatch(loginingRequestSuccess({name, isAdmin}));
   } catch (error) {
     dispatch(loginingRequestFailed(error))
