@@ -74,7 +74,7 @@ function TaskPopup() {
     switch (status) {
       case 'DONE':
         return 'Готовые';
-      case 'PROCESS':
+      case 'IN_PROGRESS':
         return 'В процессе';
       case 'TODO':
         return 'Запланировано';
@@ -129,7 +129,7 @@ function TaskPopup() {
         Описание:
       </h3>
       <p className={styles.description}>
-        {/* {data.description} */}
+        {data.description}
       </p>
     </div>
     <div className={styles.message}>

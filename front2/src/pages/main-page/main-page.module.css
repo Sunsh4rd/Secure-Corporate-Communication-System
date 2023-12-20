@@ -25,6 +25,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: opacity .3s;
+  font-family: Roboto;
 }
 
 .button:hover {

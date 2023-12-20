@@ -130,13 +130,13 @@ public class AuthController {
                     .build();
         } catch (TokenExpiredException e) {
             log.error("redirecting to login");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//            return ResponseEntity.status(HttpStatus.FOUND).
-//                    headers(new HttpHeaders(
-//                            CollectionUtils.toMultiValueMap(
-//                                    Map.of(HttpHeaders.LOCATION, List.of("http://localhost:8080/auth/login"))
-//                            ))
-//                    ).build();
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.FOUND).
+                    headers(new HttpHeaders(
+                            CollectionUtils.toMultiValueMap(
+                                    Map.of(HttpHeaders.LOCATION, List.of("http://localhost:3000/login"))
+                            ))
+                    ).build();
         }
     }
 

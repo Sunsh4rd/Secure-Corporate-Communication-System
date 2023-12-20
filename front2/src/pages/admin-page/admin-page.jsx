@@ -133,7 +133,7 @@ function AdminPage() {
       </section>
       ) : (
         <div className={styles.not_admin_container}>
-          <h2 className={styles.not_admin_title}>Вы не администратор</h2>
+          <h2 className={styles.not_admin_title}>Данный ресурс не доступен</h2>
           <Link className={styles.link_button} to={`/`}>
             Вернуться на главную
           </Link>

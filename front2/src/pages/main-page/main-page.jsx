@@ -24,7 +24,7 @@ function MainPage() {
 
 
   if (data.length === 0) {
-    return (<h2>Нету задач</h2>)
+    return (<h2>Вас пока не назначили исполнителем ни одной задачи</h2>)
   }
 
 
