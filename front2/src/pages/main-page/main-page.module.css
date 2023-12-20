@@ -7,6 +7,30 @@
   padding: 0 16px;
 }
 
+.title_and_button_container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.button {
+  border: 0;
+  height: 70px;
+  background-color: rgb(255, 233, 222);
+  color: rgb(235, 88, 59);
+  font-size: 24px;
+  text-align: center;
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .3s;
+}
+
+.button:hover {
+  opacity: .75;
+}
+
 .title {
   font-size: 36px;
   background-color: rgb(236,237,240);

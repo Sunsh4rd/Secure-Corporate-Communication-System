@@ -176,7 +176,7 @@ function TaskPopupAdmin() {
   const transformDate = (rawDate) => {
     const dateObject = new Date(rawDate);
 
-    const formattedDate = dateObject.toLocaleString('en-US', {
+    const formattedDate = dateObject.toLocaleString('ru-RU', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',

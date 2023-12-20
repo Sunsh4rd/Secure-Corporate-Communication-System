@@ -94,6 +94,7 @@ export const userSlice = createSlice({
 
     getTasksRequestFailed(state, action) {
       state.getTasksRequest = false;
+      state.getTasksRequestSuccess = false; 
       state.getTasksRequestFailed = true; 
       state.error = action.payload;
     },

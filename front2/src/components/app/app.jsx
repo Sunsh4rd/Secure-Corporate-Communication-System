@@ -25,7 +25,6 @@ const App = () => {
           <Route path='/login' element= {<LoginPage />} />
           <Route path='/register' element= {<RegisterPage />} />
           <Route path='/admin' element= {<AdminPage />} />
-
         </Routes>
         {background && (
         <Routes> 

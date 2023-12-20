@@ -5,6 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkResponse, connectToWebSocket, defaultHeadersWithOrigin, fetchGetUniqueTask, initSocket, makeFetchOptions, sendMessage } from "../../services/thunks/thunks";
 import { clearCurrentTaks, setMessage } from "../../services/slices/user-slice";
 
+  // useEffect(() => {
+
+  //    const getUniqueTask = () => {
+  //     const options = makeFetchOptions('GET', defaultHeadersWithOrigin, false, true);
+  //     return  fetch(`http://localhost:8080/tasks/${id.id}`, options)
+  //     .then(checkResponse)
+  //     .then(res => setChat(res)) 
+
+  //   };
+  //   getUniqueTask();
+  // },[messageSent])
+
+
 function TaskPopup() {
   console.log(22);
   const id  = useParams();
@@ -21,20 +34,8 @@ function TaskPopup() {
   }, [chat]);
 
 
-  // useEffect(() => {
-
-  //    const getUniqueTask = () => {
-  //     const options = makeFetchOptions('GET', defaultHeadersWithOrigin, false, true);
-  //     return  fetch(`http://localhost:8080/tasks/${id.id}`, options)
-  //     .then(checkResponse)
-  //     .then(res => setChat(res)) 
-
-  //   };
-  //   getUniqueTask();
-  // },[messageSent])
 
   const data = useSelector(store => store.userReducer.taskUnique);
-  // console.log(data);
 
 
   const loginUser = localStorage.getItem('userName');
@@ -67,6 +68,7 @@ function TaskPopup() {
   }
 
   const assigneesArray = data.assignees || [];
+  console.log(assigneesArray);
   
   const tranlateStatus = (status) => {
     switch (status) {
@@ -81,6 +83,22 @@ function TaskPopup() {
     }
   };
 
+  const transformDate = (rawDate) => {
+    const dateObject = new Date(rawDate);
+
+    const formattedDate = dateObject.toLocaleString('ru-RU', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    });
+
+    return formattedDate
+  }
+
 
   return (
   <section className={styles.main_container}>
@@ -89,7 +107,7 @@ function TaskPopup() {
       <p className={styles.status_label}>Статус:</p>
       <h3 
       className={tranlateStatus(data.status) === 'Готовые' ? `${styles.status} ${styles.status_done}` :
-    tranlateStatus(data.status) === 'Запланировано' ? `${styles.status} ${styles.status_planned}` : `${styles.status} ${styles.status_process}`}>
+      tranlateStatus(data.status) === 'Запланировано' ? `${styles.status} ${styles.status_planned}` : `${styles.status} ${styles.status_process}`}>
         {tranlateStatus(data.status)}
       </h3>
     </div>
@@ -99,9 +117,10 @@ function TaskPopup() {
       {assigneesArray.length === 0 ? (<p>Отвественных пока нет</p>) :
       (assigneesArray.map((person, index) => (
         <li className={styles.task__assignee_item} key={index}>
-          {person}
+          {person.username}
         </li>
-      )))
+      )
+      ))
       }
       </ul>
     </div>
@@ -110,27 +129,22 @@ function TaskPopup() {
         Описание:
       </h3>
       <p className={styles.description}>
-        {data.description}
+        {/* {data.description} */}
       </p>
     </div>
     <div className={styles.message}>
       <h3 className={styles.message__title}>Обсуждение</h3>
       <ul className={styles.message__container}>
-        {/* {data.chatMessages.map((task) => (
-        // {
-        //   console.log(task);
-        // }
-        // (
+        {data.chatMessages.map((task) => (
         <li className={styles.message__item} key={task.id} >
           <div className={styles.message_autor_date_wrapper}>
             <h4 className={styles.message__author}>{task.sender.username}</h4>
-            <p className={styles.message__date}>{task.sentAt}</p>
+            <p className={styles.message__date}>{transformDate(task.sentAt)}</p>
           </div>
           <p className={styles.message_text}>{task.content}</p>
         </li>
         )
-        )} */}
-
+        )}
       </ul>
     </div>
     <form className={styles.form}>

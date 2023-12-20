@@ -8,7 +8,6 @@ import { fetchGetTasks } from "../../services/thunks/thunks";
 function AdminPage() {
 
   const location = useLocation();
-  const isAdmin = useSelector(store => store.userReducer.isAdmin)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -21,15 +20,21 @@ function AdminPage() {
   if (data === null || data.length === 0 || !data) {
     return null
   } 
+
+  const isAdmin = localStorage.getItem('isAdmin')
   console.log(isAdmin);
+
   return (
     <>
-      {!isAdmin ? (
+      {isAdmin === 'true' ? (
         <section className={styles.main_container}>
         <div className={styles.title_and_button_container}>
           <h1 className={styles.title}>Система коммуникации и управления задачами</h1>
           <Link className={styles.link} to={`/admin/form`} state={{ background: location }}>
             <button className={styles.button}>Добавить задачу</button>
+          </Link>
+          <Link className={styles.link} to={`/login`}>
+            <button className={`${styles.button} ${styles.button_login}`}>Войти</button>
           </Link>
         </div>
 
@@ -127,10 +132,13 @@ function AdminPage() {
         </ul>
       </section>
       ) : (
-        <h2>Ты не еадмин </h2>
+        <div className={styles.not_admin_container}>
+          <h2 className={styles.not_admin_title}>Вы не администратор</h2>
+          <Link className={styles.link_button} to={`/`}>
+            Вернуться на главную
+          </Link>
+        </div>
       )}
-
-
     </>
   )
 }

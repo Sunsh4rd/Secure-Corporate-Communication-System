@@ -20,7 +20,6 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  
 }
 
 .button {
@@ -81,6 +80,7 @@
   color: rgb(67,146,119);
 }
 
+
 .tasks_container {
   padding: 0;
   margin: 0;
@@ -115,4 +115,31 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;  
   overflow: hidden;
+}
+
+.not_admin_container {
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.not_admin_title {
+  font-size: 34px;
+}
+
+.link_button {
+  font-size: 24px;
+  text-align: center;
+  border-radius: 10px;
+  padding: 6px 12px;
+  background-color: rgb(236,237,240);
+  color: rgb(110,122,143);
+  transition: opacity .3s;
+}
+
+.link_button:hover {
+  opacity: .75;
 }

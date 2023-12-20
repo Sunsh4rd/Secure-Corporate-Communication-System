@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './login-page.module.css'
 import Input from '../../ui/input/input';
 import useForm from '../../hooks/useForm';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchLogin } from '../../services/thunks/thunks';
 
 export const inputsLoginPage = [
@@ -24,7 +24,7 @@ export const inputsLoginPage = [
 
 const LoginPage = () => {
 
-  
+  const navigate = useNavigate();
 
   const { hadleChangeUserData, userData } = useForm({
     userName: '',
@@ -38,6 +38,21 @@ const LoginPage = () => {
    
     dispatch(fetchLogin(userData.userName,  userData.password));
   };
+
+  const {isAdmin, loginingRequestSuccess} = useSelector(store => store.userReducer)
+
+  
+  useEffect(() => {
+    if (loginingRequestSuccess && isAdmin) {
+      setTimeout(() => navigate('/admin'), 100)
+    } else if (loginingRequestSuccess && !isAdmin) {
+      setTimeout(() => navigate('/'), 100)
+
+    }
+
+  },[isAdmin, loginingRequestSuccess])
+
+
 
   return (
     <div className={styles.wrapper}>

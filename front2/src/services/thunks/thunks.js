@@ -54,6 +54,7 @@ export const loginUser = (name, password) => {
     password: password,
   };
   const options = makeFetchOptions('POST', defaultHeadersWithOrigin, body, true);
+  console.log(options);
   return fetch('http://localhost:8080/auth/login', options)
   .then(checkResponse); 
 };
@@ -188,18 +189,25 @@ export const fetchRegister = (name, password) => async(dispatch) => {
 export const fetchLogin = (name, password) => async(dispatch) => {
   try {
     dispatch(logingRequest());
+
     if (!localStorage.getItem('userName')) {
-      //  console.log(11);
-      //  localStorage.setItem('userName', name)
+
     } else {
       localStorage.removeItem('userName')
-      // console.log(22);
+
     }
-    // console.log(name);
+
+    if (!localStorage.getItem('isAdmin')) {
+
+    } else {
+      localStorage.removeItem('isAdmin')
+    }
     const response = await loginUser(name, password);
-    localStorage.setItem('userName', name)
     const isAdmin = response.is_admin
-    // console.log(isAdmin)
+
+    localStorage.setItem('userName', name)
+    localStorage.setItem('isAdmin', isAdmin)
+
     dispatch(loginingRequestSuccess({name, isAdmin}));
   } catch (error) {
     dispatch(loginingRequestFailed(error))

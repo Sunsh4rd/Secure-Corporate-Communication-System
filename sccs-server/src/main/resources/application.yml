@@ -3,12 +3,12 @@ spring:
     enabled: false
 
   datasource:
-#    url: jdbc:postgresql://ep-weathered-math-909876.us-east-2.aws.neon.tech/sccs
-#    username: ssoslickk
-#    password: H94xCKgdQjuS
-    url: jdbc:postgresql://localhost:5432/sccs_db
-    username: sccs_user
-    password: sccspass
+    url: jdbc:postgresql://ep-weathered-math-909876.us-east-2.aws.neon.tech/sccs
+    username: ssoslickk
+    password: H94xCKgdQjuS
+#    url: jdbc:postgresql://localhost:5432/sccs_db
+#    username: sccs_user
+#    password: sccspass
     driver-class-name: org.postgresql.Driver
 
   jpa:
