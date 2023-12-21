@@ -12,7 +12,7 @@ services:
       POSTGRES_DB: sccs
 
   sccs-backend:
-    build: ./playground1
+    build: ./sccs-server
     container_name: sccs-backend
     ports:
       - "8080:8080"

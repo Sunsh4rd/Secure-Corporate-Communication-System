@@ -60,14 +60,14 @@ public class AuthController {
             ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", refreshToken)
                     .httpOnly(true)
                     .sameSite("Strict")
-                    .path("/")
-                    .maxAge(86400)
+                    .path("/auth/refresh")
+                    .maxAge(2*60*60)
                     .build();
             ResponseCookie accessCookie = ResponseCookie.from("access_token", accessToken)
                     .httpOnly(true)
                     .sameSite("Strict")
                     .path("/")
-                    .maxAge(86400)
+                    .maxAge(10*60)
                     .build();
             log.info(accessToken);
             HttpHeaders headers = new HttpHeaders();
@@ -108,14 +108,14 @@ public class AuthController {
             ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", newRefresh)
                     .httpOnly(true)
                     .sameSite("Strict")
-                    .path("/")
-                    .maxAge(86400)
+                    .path("/auth/refresh")
+                    .maxAge(2*60*60)
                     .build();
             ResponseCookie accessCookie = ResponseCookie.from("access_token", newAccess)
                     .httpOnly(true)
                     .sameSite("Strict")
                     .path("/")
-                    .maxAge(86400)
+                    .maxAge(10*60)
                     .build();
             log.info("new access {}", newAccess);
             log.info("new refresh {}", newRefresh);
