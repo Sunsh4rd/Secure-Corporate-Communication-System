@@ -1,12 +1,14 @@
 .main_container {
   background-color: white;
   padding: 30px 60px;
+  padding-right: calc((100vw - 320px)/(1920 - 320) * (60 - 16) + 16px);
+  padding-left: calc((100vw - 320px)/(1920 - 320) * (60 - 16) + 16px);
   border-radius: 20px;
-  width: 500px;
+  width: calc((100vw - 320px)/(1920 - 320) * (500 - 260) + 260px);
 }
 
 .title {
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .form {
@@ -24,11 +26,10 @@
   border: 0;
   max-width: 800px;
   width: 100%;
-  outline: 1px solid black;
+  outline: 1px solid rgb(148, 148, 148);
   padding: 0 12px;
   padding-top: 6px;
   border-radius: 10px;
-
   font-family: Roboto;
   font-size: 16px;
   resize: none; /* Запрещаем изменять размер */
@@ -45,21 +46,22 @@
 .input_name {
   font-family: Roboto;
   border: 0;
-  outline: 1px solid black;
-  border-radius: 20px;
+  outline: 1px solid rgb(148, 148, 148);
+  border-radius: 10px;
   padding: 6px 12px;
   margin-bottom: 20px;
 }
 
-.input_name:valid{
+.input_name:valid {
   border-bottom: 0;
 }
 
 .button_submit {
+  font-family: Roboto;
   cursor: pointer;
   font-weight: 500;
   margin-top: 20px;
-  font-size: 24px;
+  font-size: calc((100vw - 320px)/(1920 - 320) * (24 - 20) + 20px);
   text-align: center;
   border-radius: 10px;
   padding: 6px 12px;
@@ -70,5 +72,5 @@
 }
 
 .button_submit:hover {
-  opacity: .75;
+  opacity: .65;
 }

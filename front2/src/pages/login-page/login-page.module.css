@@ -4,7 +4,7 @@
   margin: 100px 0 0;
   width: 300px;
   margin: 0 auto;
-
+  /* margin-top: calc((100vw - 320px)/(1440 - 320) * (220 - 100) + 100px); */
 }
 
 .main_container {

@@ -5,27 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkResponse, connectToWebSocket, defaultHeadersWithOrigin, fetchGetUniqueTask, initSocket, makeFetchOptions, sendMessage } from "../../services/thunks/thunks";
 import { clearCurrentTaks, setMessage } from "../../services/slices/user-slice";
 
-  // useEffect(() => {
-
-  //    const getUniqueTask = () => {
-  //     const options = makeFetchOptions('GET', defaultHeadersWithOrigin, false, true);
-  //     return  fetch(`http://localhost:8080/tasks/${id.id}`, options)
-  //     .then(checkResponse)
-  //     .then(res => setChat(res)) 
-
-  //   };
-  //   getUniqueTask();
-  // },[messageSent])
-
-
 function TaskPopup() {
-  console.log(22);
   const id  = useParams();
   const dispatch = useDispatch();
   const stompClient = useRef(null);
   const inputRef = useRef('');
   const [messageSent, setMessageSent] = useState(false);
-  // const [inputValue, setInputValue] = useState('')
 
   const [chat, setChat] = useState([]);
 
@@ -50,7 +35,7 @@ function TaskPopup() {
     let messageContent = inputRef.current.value;
     stompClient.current.send(`/app/taskChat.${id.id}.send`, {}, JSON.stringify({ username: loginUser, message: messageContent }));
     setMessageSent(true)
-    console.log(messageSent);
+    // console.log(messageSent);
   }
 
   const [status, setStatus] = useState('planned');
@@ -92,7 +77,7 @@ function TaskPopup() {
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit',
+      // second: '2-digit',
       hour12: false,
     });
 
@@ -114,7 +99,7 @@ function TaskPopup() {
     <div className={styles.assignee_container}>
       <h3 className={styles.assignee_title}>Ответсвенные:</h3>
       <ul className={styles.task__assignee_container}>
-      {assigneesArray.length === 0 ? (<p>Отвественных пока нет</p>) :
+      {assigneesArray.length === 0 ? (<p style={{margin:0, textAlign:"center", color: "rgb(188, 188, 188)", fontSize: 13}}>Отвественных пока нет</p>) :
       (assigneesArray.map((person, index) => (
         <li className={styles.task__assignee_item} key={index}>
           {person.username}
@@ -135,6 +120,7 @@ function TaskPopup() {
     <div className={styles.message}>
       <h3 className={styles.message__title}>Обсуждение</h3>
       <ul className={styles.message__container}>
+        {data.chatMessages.length === 0 && (<p className={styles.no_message}>Нет сообщений </p>)}
         {data.chatMessages.map((task) => (
         <li className={styles.message__item} key={task.id} >
           <div className={styles.message_autor_date_wrapper}>
@@ -153,7 +139,7 @@ function TaskPopup() {
         id="message"
         className={`${styles.textarea}`}
         placeholder="Ваш текст"
-        rows={4}
+        rows={2}
         ref={inputRef}
         // value={inputValue}
         // onChange={setInputValue]

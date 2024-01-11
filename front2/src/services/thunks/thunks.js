@@ -60,7 +60,7 @@ export const loginUser = (name, password) => {
 };
 
 export const getTasks = () => {
-  const options = makeFetchOptions('GET', defaultHeadersWithOrigin,false, true);
+  const options = makeFetchOptions('GET', defaultHeadersWithOrigin, false, true);
   return fetch('http://localhost:8080/tasks', options)
   .then(checkResponse); 
 };
@@ -155,7 +155,6 @@ export const fetchSentNewStatus = (taskId, taskStatus) => async(dispatch) => {
 
 export const fetchGetUniqueTask= (id) => async(dispatch) => {
   try {
-    console.log(33);
     dispatch(getUniqueTaskRequest());
     const response = await getUniqueTask(id);
     // console.log(response); 
@@ -169,7 +168,7 @@ export const fetchGetTasks = () => async(dispatch) => {
   try {
     dispatch(getTasksRequest());
     const response = await getTasks();
-    // console.log(response); 
+    console.log(response); 
     dispatch(getTasksRequestSuccessed(response));
   } catch (error) {
     dispatch(getTasksRequestFailed(error))

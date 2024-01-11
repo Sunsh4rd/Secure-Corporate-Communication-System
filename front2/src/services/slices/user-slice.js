@@ -34,12 +34,16 @@ const intitialState = {
   message: '',
   receivedMessage: '',
   isAdmin: false,
+  somethingChanged: false,
 }
 
 export const userSlice = createSlice({
   name: 'user',
   initialState: intitialState,
   reducers: {
+    setSomethingChanged: (state) => {
+      state.somethingChanged = !state.somethingChanged;
+    },
     setStompClient: (state, action) => {
       state.stompClient = action.payload;
     },
@@ -82,7 +86,9 @@ export const userSlice = createSlice({
       state.error = action.payload
     },
     getTasksRequest(state) {
-      state.getTasksRequest = true 
+      state.getTasksRequest = true;
+      state.tasksArray = [];
+
     },
 
     getTasksRequestSuccessed(state, action) {
@@ -229,6 +235,7 @@ export const { registrationRequest,
   addNewTaskRequest,
   addNewTaskRequestSuccess,
   addNewTaskRequestFailed,
+  setSomethingChanged
  } = userSlice.actions;
 
 export default userSlice.reducer

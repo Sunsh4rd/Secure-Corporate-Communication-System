@@ -1,0 +1,52 @@
+.header {
+  color: #000000;
+  padding: 10px 10px 0 10px;
+  padding-bottom: calc((100vw - 320px)/(1920 - 120) * (10 - 10) + 10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 6vh;
+}
+
+.leftContent {
+  display: flex;
+  align-items: center;
+}
+
+.greeting {
+  margin-right: 10px;
+}
+
+.rightContent {
+  display: flex;
+  align-items: center;
+}
+
+.title_and_button_container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+}
+
+
+.button {
+  font-size: calc((100vw - 320px)/(1920 - 120) * (22 - 17) + 17px);
+  border-radius: 6px;
+  text-align: center;
+  margin: 0;
+  padding: 6px;
+  background-color: rgb(43,111,214);
+  color: rgb(251, 252, 254);
+  border: 0;
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: .75;
+}
+

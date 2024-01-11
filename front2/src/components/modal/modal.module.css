@@ -15,15 +15,17 @@
 .modal_state_closed {
   display: none;
 }
-
+/* calc((100vw - 320px)/(1920 - 120) * (38 - 2) + 2px) */
 .svvg {
-  transform: translate(40px);
+  transform: translate(-14px, 46px);
   align-self: flex-end;
   cursor: pointer;
+  width: calc((100vw - 320px)/(1920 - 120) * (28 - 28) + 28px);
+  color: black;
 }
 
-.svvg {
-
+.svvg:hover {
+  opacity: .5;
 }
 /* .svvg {
   position: absolute;

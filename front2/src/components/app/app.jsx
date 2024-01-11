@@ -8,8 +8,8 @@ import Modal from '../modal/modal';
 import TaskPopup from '../task-popup/task-popup';
 import AdminPage from '../../pages/admin-page/admin-page';
 import TaskPopupAdmin from '../task-popup-admin/task-popup-admin';
-import { useSelector } from 'react-redux';
 import TaskForm from '../task-form/task-form';
+import Header from '../header/header';
 
 
 const App = () => {
@@ -19,6 +19,8 @@ const App = () => {
 
   return (
     <div className={styles.main_container}>
+      <Header />
+
       <div className={styles.wrapper}>
         <Routes location={background || location}>
           <Route path='/' element= {<MainPage />} />

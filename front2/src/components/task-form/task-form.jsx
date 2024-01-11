@@ -3,6 +3,7 @@ import styles from "./task-form.module.css";
 import { useDispatch } from "react-redux";
 import { fetchAddNewTask } from "../../services/thunks/thunks";
 import useForm from "../../hooks/useForm";
+import { setSomethingChanged } from "../../services/slices/user-slice";
 
 
 function TaskForm() {
@@ -15,6 +16,8 @@ function TaskForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(fetchAddNewTask(inputTitle, inputDesc));
+    dispatch(setSomethingChanged())
+
   };
 
   return (

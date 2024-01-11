@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkResponse, connectToWebSocket, defaultHeadersWithOrigin, fetchAddNewAssignee, fetchGetAllNotAssignee, fetchGetUniqueTask, fetchSentNewStatus, initSocket, makeFetchOptions, sendMessage } from "../../services/thunks/thunks";
 
 import Select, { ActionMeta, OnChangeValue, StylesConfig } from 'react-select';
+import { setSomethingChanged } from '../../services/slices/user-slice';
 // import { ColourOption, colourOptions } from '../data';
 
 // const colourOptions = [
@@ -20,7 +21,7 @@ const styles2 = {
   },
   multiValueLabel: (base, state) => {
     return state.data.isFixed
-      ? { ...base, fontWeight: 'bold', color: 'white', paddingRight: 6 }
+      ? { ...base, fontWeight: 'bold', color: 'white', paddingRight: 6, fontSize: '10px' }
       : base;
   },
   multiValueRemove: (base, state) => {
@@ -35,6 +36,7 @@ const orderOptions = (values) => {
 };
 
 function TaskPopupAdmin() {
+
   const tranlateStatus = (status) => {
     switch (status) {
       case 'DONE':
@@ -82,7 +84,7 @@ function TaskPopupAdmin() {
     let messageContent = inputRef.current.value;
     stompClient.current.send(`/app/taskChat.${id.id}.send`, {}, JSON.stringify({ username: loginUser, message: messageContent }));
     setMessageSent(true)
-    console.log(messageSent);
+    // console.log(messageSent);
   }
   const [status, setStatus] = useState('');
 
@@ -126,7 +128,7 @@ function TaskPopupAdmin() {
           isFixed: true
       })
       })
-      console.log(arrayNA);
+      // console.log(arrayNA);
       setValue(orderOptions(arrayNA));
       return arrayA
 
@@ -142,11 +144,12 @@ function TaskPopupAdmin() {
 
 
   const handleSubmitChangeStatus = () => {
+    dispatch(setSomethingChanged())
     dispatch(fetchSentNewStatus(id.id, status))
   }
   
   const handleSubmitAddAssignee = () => {
-    console.log();
+    dispatch(setSomethingChanged())
     dispatch(fetchAddNewAssignee(id.id, value[value.length - 1].value))
 
   }
@@ -171,7 +174,7 @@ function TaskPopupAdmin() {
     setValue(orderOptions(newValue));
   };
 
-  console.log(value);
+  // console.log(value);
 
   const transformDate = (rawDate) => {
     const dateObject = new Date(rawDate);
@@ -182,7 +185,6 @@ function TaskPopupAdmin() {
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit',
       hour12: false, // Use 24-hour format
     });
 
@@ -309,7 +311,7 @@ function TaskPopupAdmin() {
           id="message"
           className={`${styles.textarea}`}
           placeholder="Ваш текст"
-          rows={4}
+          rows={2}
           ref={inputRef}
           // value={inputValue}
           // onChange={setInputValue]

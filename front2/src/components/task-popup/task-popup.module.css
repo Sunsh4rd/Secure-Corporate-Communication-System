@@ -1,6 +1,9 @@
 .main_container {
   background-color: rgb(255, 255, 255);
-  padding: 30px 46px;
+  padding-right: calc((100vw - 320px)/(1920 - 120) * (46 - 20) + 20px);
+  padding-left: calc((100vw - 320px)/(1920 - 120) * (46 - 20) + 20px);
+  padding-top: calc((100vw - 320px)/(1920 - 120) * (20 - 8) + 8px);
+  padding-bottom: calc((100vw - 320px)/(1920 - 120) * (20 - 8) + 8px);
   border-radius: 10px;
   font-family: Roboto;
   display: flex;
@@ -10,7 +13,10 @@
 
 .title {
   margin: 0;
-  margin-bottom: 32px;
+  margin-bottom: calc((100vw - 320px)/(1920 - 120) * (22 - 16) + 16px);
+  font-size: 20px;
+  margin-right: 22px;
+  color: rgb(38, 38, 38);
 }
 
 .status_container {
@@ -59,9 +65,8 @@
 
 .assignee_container {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
-  
 } 
 
 .assignee_title {
@@ -93,11 +98,12 @@
 }
 
 .description_container, .assignee_container, .main_container, .status_container {
-  margin-bottom: 23px;
+  margin-bottom: 16px;
 }
 
-.message {
-
+.message__title {
+  margin-top: 6px;
+  margin-bottom: calc((100vw - 320px)/(1920 - 120) * (16 - 12) + 12px);
 }
 
 .message__container {
@@ -107,15 +113,24 @@
   padding-right: 8px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  max-height: 360px;
+  gap: 14px;
   overflow-y: auto;
+  max-height: 140px;
+  box-sizing: border-box;
+}
+
+.no_message {
+  text-align: center;
+  color: rgb(188, 188, 188);
+  margin: 8px 0;
 }
 
 .message__item {
   background-color: rgb(238, 238, 238);
   padding: 8px 12px;
   border-radius: 4px;
+  max-height: 150px;
+
 }
 
 .message_autor_date_wrapper {
@@ -127,15 +142,26 @@
 
 .message__author {
   margin: 0;
+  font-size: calc((100vw - 320px)/(1920 - 120) * (16 - 14) + 14px);
+
 }
 
 .message__date {
+  flex: 1;
+  text-align: end;
   margin: 0;
   color: rgb(116, 116, 116);
+  font-size: calc((100vw - 320px)/(1920 - 120) * (16 - 13) + 13px);
+}
+
+.message_text {
+  margin-bottom: 6px;
+  margin-top: 8px;
+  font-size: calc((100vw - 320px)/(1920 - 120) * (16 - 14) + 14px);
 }
 
 .form {
-  margin-top: 18px;
+  margin-top: calc((100vw - 320px)/(1920 - 120) * (18 - 12) + 12px);
   display: flex;
   gap: 12px;
 }

@@ -1,6 +1,9 @@
 .main_container {
   background-color: rgb(255, 255, 255);
-  padding: 30px 46px;
+  padding-right: calc((100vw - 320px)/(1920 - 120) * (46 - 12) + 12px);
+  padding-left: calc((100vw - 320px)/(1920 - 120) * (46 - 12) + 12px);
+  padding-top: calc((100vw - 320px)/(1920 - 120) * (20 - 8) + 8px);
+  padding-bottom: calc((100vw - 320px)/(1920 - 120) * (20 - 8) + 8px);
   border-radius: 10px;
   font-family: Roboto;
   display: flex;
@@ -10,7 +13,10 @@
 
 .title {
   margin: 0;
-  margin-bottom: 32px;
+  margin-bottom: calc((100vw - 320px)/(1920 - 120) * (22 - 16) + 16px);
+  font-size: 20px;
+  margin-right: 22px;
+  color: rgb(38, 38, 38);
 }
 
 .status_container {
@@ -25,7 +31,8 @@
   margin: 0;
   list-style: none;
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: calc((100vw - 320px)/(1920 - 120) * (12 - 7) + 7px);
 }
 
 .status_label, .description_label, .status_label, .assignee_title {
@@ -40,7 +47,9 @@
   margin: 0;
   border-radius: 3px;
   padding: 2px 8px;
-  font-size: 16px;
+  padding-right: calc((100vw - 320px)/(1920 - 120) * (8 - 4) + 4px);
+  padding-left: calc((100vw - 320px)/(1920 - 120) * (8 - 4) + 4px);
+  font-size: calc((100vw - 320px)/(1920 - 120) * (16 - 12) + 12px);
   cursor: pointer;
   text-wrap: nowrap;
   transition: box-shadow .3s ease-in;
@@ -75,6 +84,7 @@
   gap: 12px;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   
 } 
 
@@ -107,7 +117,7 @@
 }
 
 .description_container, .assignee_container, .main_container, .status_container {
-  margin-bottom: 23px;
+  margin-bottom: 16px;
 }
 
 .status_container {
@@ -119,6 +129,11 @@
 
 }
 
+.message__title {
+  margin-top: 6px;
+  margin-bottom: calc((100vw - 320px)/(1920 - 120) * (16 - 12) + 12px);
+}
+
 .message__container {
   list-style: none;
   margin: 0;
@@ -126,14 +141,15 @@
   padding-right: 8px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  max-height: 360px;
+  gap: 14px;
   overflow-y: auto;
+  max-height: 140px;
+  box-sizing: border-box;
 }
 
 .message__item {
   background-color: rgb(238, 238, 238);
-  padding: 8px 12px;
+  padding: 8px 11px;
   border-radius: 4px;
 }
 
@@ -146,15 +162,25 @@
 
 .message__author {
   margin: 0;
+  font-size: calc((100vw - 320px)/(1920 - 120) * (16 - 14) + 14px);
 }
 
 .message__date {
+  flex: 1;
+  text-align: end;
   margin: 0;
   color: rgb(116, 116, 116);
+  font-size: calc((100vw - 320px)/(1920 - 120) * (16 - 12) + 12px);
+}
+
+.message_text {
+  margin-bottom: 6px;
+  margin-top: 8px;
+  font-size: calc((100vw - 320px)/(1920 - 120) * (16 - 14) + 14px);
 }
 
 .form {
-  margin-top: 18px;
+  margin-top: calc((100vw - 320px)/(1920 - 120) * (18 - 12) + 12px);
   display: flex;
   gap: 12px;
 }
@@ -163,6 +189,7 @@
   border: 0;
   max-width: 800px;
   width: 100%;
+  min-width: 100px;
   outline: 1px solid black;
   padding: 0 12px;
   padding-top: 6px;
@@ -191,6 +218,8 @@
   border-radius: 10px;
   padding: 6px 12px;
   transition: opacity .3s ease;
+  font-family: Roboto;
+
 }
 
 .button_submit_statue_and_assignee {
@@ -200,12 +229,11 @@
   border-radius: 2px;
   color: white;
   font-family: Roboto;
-  font-size: 12px;
+  font-size: 10px;
   font-style: normal;
   font-weight: 500;
   line-height: 100%; 
   letter-spacing: -0.4px;
-
   /* max-height: 52px; */
   transition: color .2s ease-in, background-color .3s;
   cursor: pointer;

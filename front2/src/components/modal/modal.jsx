@@ -31,7 +31,7 @@ const Modal = ({ children }) => {
         <section className={styles.modal}>
           <AiOutlineClose 
             className={styles.svvg}
-            color={'white'}
+            color={'#000'}
             size={'40px'}
             onClick={() => {
               navigate(-1)}}
